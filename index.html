@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <link rel="stylesheet" href="/src/style/index-style.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lista de Compras - Bitura.tech</title>
-  
+  <link rel="stylesheet" href="/src/style/index-style.css" />
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous" defer></script>
 </head>
 
@@ -21,19 +18,30 @@
   </div>
 
   <div class="card" id="cardList">
-
     <img src="/src/assets/imgs/logositesma.png" alt="Bitura.tech Logo" class="logo-header">
 
     <div id="divAlert"></div>
+
     <form id="formList">
       <div class="form-control">
-        <input id="inputItem" type="text" placeholder="Digite um item">
+        <input id="inputItem" type="text" placeholder="Digite um item" autocomplete="off">
         <input id="inputQty" type="number" placeholder="Qtd" min="1" value="1" style="width: 60px; margin-right: 10px;">
-        <button id="btnSubmit">Adicionar</button>
+        <button id="btnSubmit" type="submit">Adicionar</button>
       </div>
     </form>
 
-    <div id="container-list" class="list"></div>
+    
+    <div id="stats" class="stats">Pendentes: 0 | Comprados: 0 | Total: 0</div>
+
+    
+    <div class="sort-controls">
+      <button id="sortAZ">A → Z</button>
+      <button id="sortZA">Z → A</button>
+      <button id="sortComprados">Comprados primeiro</button>
+      <button id="sortPendentes">Pendentes primeiro</button>
+    </div>
+
+    <div id="container-list" class="list" aria-live="polite"></div>
 
     <div class="divBtn">
       <button id="clearAll">Limpar Itens</button>
@@ -50,8 +58,10 @@
     </div>
   </footer>
 
-  
+  <audio id="soundAdd" src="/src/assets/sounds/click.mp3" preload="auto"></audio>
+  <audio id="soundRemove" src="/src/assets/sounds/click.mp3" preload="auto"></audio>
+  <audio id="soundCheck" src="/src/assets/sounds/click.mp3" preload="auto"></audio>
+
   <script src="/src/javascript/index.js"></script>
 </body>
-
 </html>
