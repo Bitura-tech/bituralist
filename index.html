@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/src/style/index-style.css">
+  <title>Lista de Compras - Bitura.tech</title>
+</head>
+
+<body>
+  <div id="link" class="container-a">
+    <a href="../"><i class="fa-solid fa-house"></i> Home</a>
+  </div>
+
+  <div class="card" id="cardList">
+    
+    <img src="/src/assets/imgs/logositesma.png" alt="Bitura.tech Logo" class="logo-header">
+
+    <div id="divAlert"></div>
+    <form id="formList">
+      <div class="form-control">
+        <input id="inputItem" type="text" placeholder="Digite um item">
+        <input id="inputQty" type="number" placeholder="Qtd" min="1" value="1" style="width: 60px; margin-right: 10px;">
+        <button id="btnSubmit">Adicionar</button>
+      </div>
+    </form>
+
+    <div id="container-list" class="list"></div>
+
+    <div class="divBtn">
+      <button id="clearAll">Limpar Itens</button>
+      <button id="btnExport">Exportar .txt</button>
+      <input type="file" id="importFile" accept=".txt" style="display:none">
+      <button id="btnImport">Importar .txt</button>
+    </div>
+  </div>
+
+  
+  <footer>
+    <div class="footer-content">
+      <img src="/src/assets/imgs/bitura-footer.png" alt="Bitura.tech Logo" class="footer-logo">
+      <p>© Bitura.tech - 2025 - Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="/src/javascript/index.js"></script>
+</body>
+
+</html>
