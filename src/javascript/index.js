@@ -1,3 +1,4 @@
+// ------------------- ELEMENTOS -------------------
 const inputItem = document.getElementById("inputItem");
 const inputQty = document.getElementById("inputQty");
 const btnSubmit = document.getElementById("btnSubmit");
@@ -7,15 +8,22 @@ const btnClearAll = document.getElementById("clearAll");
 const btnExport = document.getElementById("btnExport");
 const btnImport = document.getElementById("btnImport");
 const importFile = document.getElementById("importFile");
+const themeToggle = document.getElementById("themeToggle");
 
 const errorMsg = "<div id='alert' class='divAlert error'><span>Por favor, preencha o campo para adicionar um item!</span></div>";
 
+// ------------------- EVENTOS -------------------
 btnSubmit.addEventListener("click", addItem);
 btnClearAll.addEventListener("click", clearAll);
 btnExport.addEventListener("click", exportTxt);
 btnImport.addEventListener("click", () => importFile.click());
 importFile.addEventListener("change", importTxt);
+window.addEventListener("DOMContentLoaded", () => {
+  setupItems();
+  initTheme(); // inicializa tema quando DOM carregado
+});
 
+// ------------------- FUNÇÕES LISTA -------------------
 function addItem(e) {
   e.preventDefault();
   const name = inputItem.value.trim();
@@ -38,8 +46,8 @@ function createItem(id, name, quantity, comprado) {
 
   itemDiv.innerHTML = `
     <input type="checkbox" class="checkItem" ${comprado ? "checked" : ""}>
-    <p class="${comprado ? "comprado" : ""}">${name} - <strong>x${quantity}</strong></p>
-    <div><button class="clearBtn"><i class="fas fa-trash"></i></button></div>
+    <p class="${comprado ? "comprado" : ""}">${escapeHtml(name)} - <strong>x${quantity}</strong></p>
+    <div><button class="clearBtn" aria-label="Remover item"><i class="fas fa-trash"></i></button></div>
   `;
 
   const btnDelete = itemDiv.querySelector(".clearBtn");
@@ -69,7 +77,7 @@ function toggleComprado(e) {
 
 function showMessage(hasItem) {
   if (hasItem) {
-    const successMsg = `<div id='alert' class='divAlert success'><span>${hasItem} adicionado com sucesso!</span></div>`;
+    const successMsg = `<div id='alert' class='divAlert success'><span>${escapeHtml(hasItem)} adicionado com sucesso!</span></div>`;
     divAlert.innerHTML = successMsg;
     setTimeout(() => divAlert.innerHTML = "", 3000);
   } else {
@@ -118,9 +126,10 @@ function setupItems() {
       createItem(item.id, item.name, item.quantity, item.comprado);
     });
     btnClearAll.style.visibility = "visible";
+  } else {
+    btnClearAll.style.visibility = "hidden";
   }
 }
-
 
 function exportTxt() {
   const items = getLocalStorage();
@@ -150,7 +159,7 @@ function importTxt(e) {
       const [name, quantity, comprado] = line.split(";");
       return {
         id: new Date().getTime().toString() + Math.random(),
-        name: name.trim(),
+        name: (name || "").trim(),
         quantity: quantity || 1,
         comprado: comprado === "true"
       };
@@ -162,4 +171,45 @@ function importTxt(e) {
   reader.readAsText(file);
 }
 
-window.addEventListener("DOMContentLoaded", setupItems);
+// ------------------- FUNÇ
+function escapeHtml(str) {
+  if (!str) return "";
+  return str.replace(/[&<>"']/g, function(m) {
+    return ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[m];
+  });
+}
+
+
+function initTheme() {
+  
+  if (!themeToggle) return;
+
+
+  const saved = localStorage.getItem("theme");
+  const currentTheme = saved === "dark" ? "dark" : "light";
+
+
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  updateThemeButton(currentTheme);
+
+  
+  themeToggle.addEventListener("click", () => {
+    const now = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", now);
+    localStorage.setItem("theme", now);
+    updateThemeButton(now);
+  });
+}
+
+function updateThemeButton(theme) {
+
+  if (!themeToggle) return;
+  themeToggle.textContent = theme === "dark" ? "☀️" : "🌙";
+  themeToggle.title = theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro";
+}
